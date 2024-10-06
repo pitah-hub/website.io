@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Checkout</h2>
+        <form id="checkoutForm" onsubmit="event.preventDefault(); initiatePayment();">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" class="form-control" id="phone" required placeholder="e.g. 0712345678">
+            </div>
+            <div class="form-group">
+                <label for="amount">Total Amount:</label>
+                <input type="text" class="form-control" id="amount" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+        </form>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || []; // Get cart from local storage
+        let totalAmount = 0;
+
+        function calculateTotalAmount() {
+            totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('amount').value = totalAmount; // Display total amount
+        }
+
+        function initiatePayment() {
+            const phone = document.getElementById('phone').value;
+
+            // Simulate M-Pesa popup notification
+            alert(`A payment request has been sent to ${phone} for Ksh ${totalAmount}. Please check your M-Pesa app or SMS for the confirmation.`);
+
+            // Here you can also add logic to send the payment request to your server
+            // or an actual M-Pesa API for processing the payment.
+        }
+
+        // Calculate total on page load
+        window.onload = calculateTotalAmount;
+        // Function to calculate the total amount from the cart
+function calculateTotal() {
+  // Assume you have the cart stored in an array of objects like this
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let total = 0;
+  
+  cart.forEach(item => {
+    total += item.price * item.quantity;
+  });
+
+  return total;
+}
+
+// Display the popup with the total amount
+document.getElementById('checkout-btn').addEventListener('click', function() {
+  let totalAmount = calculateTotal();
+  document.getElementById('total-amount').innerText = totalAmount;
+  
+  // Show the popup
+  document.getElementById('checkout-popup').style.display = 'block';
+});
+
+// Confirm payment and redirect to stkpush.php
+document.getElementById('confirm-payment').addEventListener('click', function() {
+  let totalAmount = calculateTotal();
+  
+  // Redirect to stkpush.php with the total amount as a query parameter
+  window.location.href = `stkpush.php?amount=${totalAmount}`;
+});
+
+// Cancel the payment popup
+document.getElementById('cancel').addEventListener('click', function() {
+  // Hide the popup
+  document.getElementById('checkout-popup').style.display = 'none';
+});
+
+    </script>
+</body>
+
+</html>

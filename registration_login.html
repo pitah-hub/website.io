@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration and Login</title>
+</head>
+
+<body>
+
+    <!-- Registration Form -->
+    <h2>Register</h2>
+    <form id="registration-form">
+        <input type="text" id="register-name" placeholder="Name" required>
+        <input type="email" id="register-email" placeholder="Email" required>
+        <input type="password" id="register-password" placeholder="Password" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- Login Form -->
+    <h2>Login</h2>
+    <form id="login-form">
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        // Registration Script
+        document.getElementById('registration-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get form values
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            // Get existing users from local storage or initialize an empty array
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Check if the user already exists
+            if (users.some(user => user.email === email)) {
+                alert('User already exists. Please login.');
+                return;
+            }
+
+            // Add the new user to the array
+            users.push({ name, email, password });
+
+            // Save the updated users array back to local storage
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Registration successful! You can now log in.');
+            document.getElementById('registration-form').reset(); // Reset the form
+        });
+
+        // Login Script
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get form values
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Retrieve users from local storage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            console.log('Stored Users:', users); // Debugging line
+
+            // Check if any user matches the provided email and password
+            const user = users.find(user => user.email === email && user.password === password);
+            sessionStorage.setItem("loggedIn", true);
+        
+            if (user) {
+                alert('Login successful!');
+                console.log('Redirecting to homepage...'); // Debugging line
+                // Redirect to the homepage
+                window.location.href = 'index.html'; // Change 'index.html' to your actual homepage file name
+            } else {
+                alert('Invalid email or password. Please try again.');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <script>
+        // Check if the user is already logged in
+        function checkLogin() {
+            const isLoggedIn = sessionStorage.getItem("loggedIn");
+            if (isLoggedIn) {
+                alert("You are already logged in.");
+                window.location.href = "index.html"; // Redirect to homepage
+            }
+        }
+
+        // Handle form submission
+        function handleRegistration(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get user input
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Retrieve existing users from local storage
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Check if the username already exists
+            const existingUser = users.find(user => user.username === username);
+            if (existingUser) {
+                alert("Username already exists. Please choose a different one.");
+                return;
+            }
+
+            // Add new user to the users array
+            users.push({ username, email, password });
+
+            // Save the updated users array to local storage
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // Log the user in
+            sessionStorage.setItem("loggedIn", true);
+            alert("Registration successful! You are now logged in.");
+            window.location.href = "index.html"; // Redirect to the homepage
+        }
+    </script>
+</head>
+<body onload="checkLogin()">
+    <h2>Registration Form</h2>
+    <form id="registrationForm" onsubmit="handleRegistration(event)">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>

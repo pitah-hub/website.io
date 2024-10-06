@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <div id="paymentDetails"></div>
+    <button id="confirm-payment">Confirm Payment</button>
+
+    <script>
+        // Get the total from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const total = urlParams.get('total');
+        
+        // Display payment details
+        document.getElementById('paymentDetails').innerHTML = `
+            <p>Total Amount: Ksh ${total}</p>
+            <p>Please proceed with the payment.</p>
+        `;
+
+        // Handle the Confirm Payment button click
+        document.getElementById('confirm-payment').addEventListener('click', function() {
+            // Redirect to stkpush.php with the total amount
+            window.location.href = `stkpush.php?amount=${total}`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <script>
+        // Check if the user is already logged in
+        function checkLogin() {
+            const isLoggedIn = sessionStorage.getItem("loggedIn");
+            if (isLoggedIn) {
+                alert("You are already logged in.");
+                window.location.href = "index.html"; // Redirect to homepage
+            }
+        }
+    </script>
+</head>
+<body onload="checkLogin()">
+    <h1>Welcome! Please choose an option:</h1>
+    <button onclick="window.location.href='registration_login.html'">Register</button>
+    <button onclick="window.location.href='registration_login.html'">Login</button>
+</body>
+</html>
